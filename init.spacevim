@@ -1,20 +1,26 @@
 " Let Vim and NeoVim shares the same plugin directory.
 " Comment it out if you don't like
-let g:spacevim_plug_home = '~/.vim/plugged'
+let g:spacevim_plug_home = '~/.nvim'
 
 " The default leader key is space key.
 " Uncomment the line below and modify "<\Space>" if you prefer another
-" let g:spacevim_leader = "<\Space>"
+let g:spacevim_leader = ","
 
 " The default local leader key is comma.
 " Uncomment the line below and modify ',' if you prefer another
-" let g:spacevim_localleader = ','
+let g:spacevim_localleader = '<\Space>'
 
 " Enable the existing layers in space-vim
 let g:spacevim_layers = [
       \ 'fzf', 'unite', 'better-defaults',
-      \ 'which-key',
+      \ 'which-key', 'python', 'markdown',
+      \ 'java', 'c-c++', 'file-manager'
       \ ]
+
+"Layer 'better-defaults'
+"function! Layers()
+"  Layer 'better-defaults', {'exclude' : 'xtal8/traces.vim'}
+"endfunction
 
 " If you want to have more control over the layer, try using Layer command.
 " if g:spacevim_gui
@@ -33,7 +39,17 @@ endfunction
 function! UserConfig()
 
   " If you have installed the powerline fonts and want to enable airline layer
-  " let g:airline_powerline_fonts=1
+  let g:airline_powerline_fonts=1
+  let g:pymode_rope = 1
+  let g:pymode_options=1
+  let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe', 'pylint']
+  let g:pymode_rope_completion_bind = '<C-]>'
+  let g:pymode_rope_complete_on_dot=0
+  let g:pymode_rope_goto_definition_bind = '<C-]>'
+  let g:pymode_rope_autoimport = 1
+  let g:pymode_rope_autoimport_import_after_complete = 1
+  autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+  set fileignorecase
 
   " Use gui colors in terminal if available
   if has('termguicolors')

@@ -63,7 +63,7 @@ install_plugins() {
 
 generate_dot_spacevim() {
     if [ ! -f "$HOME/.spacevim" ]; then
-        cp "$HOME/.space-vim/init.spacevim" "$HOME/.spacevim"
+        ln -sf "$HOME/.space-vim/init.spacevim" "$HOME/.spacevim"
 
         ret="$?"
         success "Successfully generated .spacevim in your home directory"
