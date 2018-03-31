@@ -93,7 +93,7 @@ install_for_vim() {
     ln -sf "$HOME/.space-vim/init.vim" "$HOME/.vimrc"
     generate_dot_spacevim
 
-    install_plugins "vim"
+    #install_plugins "vim"
 }
 
 install_for_neovim() {

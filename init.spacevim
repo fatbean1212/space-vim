@@ -1,6 +1,7 @@
 " Let Vim and NeoVim shares the same plugin directory.
 " Comment it out if you don't like
-let g:spacevim_plug_home = '~/.nvim'
+"let g:spacevim_plug_home = '~/.nvim'
+let g:spacevim_plug_home = '~/.nvim2'
 
 " The default leader key is space key.
 " Uncomment the line below and modify "<\Space>" if you prefer another
@@ -9,17 +10,24 @@ let g:spacevim_leader = ","
 " The default local leader key is comma.
 " Uncomment the line below and modify ',' if you prefer another
 let g:spacevim_localleader = '<\Space>'
+let g:vim_better_default_backup_on = 1
+let g:vim_better_default_persistent_undo = 1
 
 " Enable the existing layers in space-vim
 let g:spacevim_layers = [
-      \ 'fzf', 'unite', 'better-defaults',
-      \ 'which-key', 'python', 'markdown',
-      \ 'java', 'c-c++', 'file-manager'
-      \ ]
+      "\ 'python', 'deoplete'
+      \]
+      "\ 'fzf', 'unite', 'better-defaults',
+      "\  'python',
+      "\ 'java', 'c-c++', 'file-manager'
+      "\ ]
 
 "Layer 'better-defaults'
 "function! Layers()
-"  Layer 'better-defaults', {'exclude' : 'xtal8/traces.vim'}
+  "Layer 'better-defaults', {'exclude' : ['haya14busa/is.vim']}
+  "Layer 'markdown'
+  "Layer 'deoplete'
+  "Layer 'deoplete', { 'exclude' : ['eagletmt/neco-ghc', 'sebastianmarkow/deoplete-rust', 'zchee/deoplete-go']}
 "endfunction
 
 " If you want to have more control over the layer, try using Layer command.
@@ -28,28 +36,69 @@ let g:spacevim_layers = [
 " endif
 
 " Manage your own plugins, refer to vim-plug's instruction for more detials.
-function! UserInit()
+"function! UserInit()
 
   " Add plugin via Plug command.
-  Plug 'junegunn/seoul256.vim'
+  "Plug 'junegunn/seoul256.vim'
+  "Plug 'zchee/deoplete-jedi'
 
+"endfunction
+
+" Initialize directories {
+function! InitializeDirectories()
+    let parent = $HOME
+    let prefix = 'nvim'
+    let dir_list = {
+                \ 'backup': 'backupdir',
+                \ 'views': 'viewdir',
+                \ 'swap': 'directory' }
+
+    if has('persistent_undo')
+        let dir_list['undo'] = 'undodir'
+    endif
+    let common_dir = parent . '/.' . prefix
+
+    for [dirname, settingname] in items(dir_list)
+        let directory = common_dir . dirname . '/'
+        if exists("*mkdir")
+            if !isdirectory(directory)
+                call mkdir(directory)
+            endif
+        endif
+        if !isdirectory(directory)
+            echo "Warning: Unable to create backup directory: " . directory
+            echo "Try: mkdir -p " . directory
+        else
+            let directory = substitute(directory, " ", "\\\\ ", "g")
+            exec "set " . settingname . "=" . directory
+        endif
+    endfor
 endfunction
+" }
 
 " Override the default settings as well as adding extras
 function! UserConfig()
 
   " If you have installed the powerline fonts and want to enable airline layer
   let g:airline_powerline_fonts=1
+  let g:pymode=1
   let g:pymode_rope = 1
-  let g:pymode_options=1
   let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe', 'pylint']
   let g:pymode_rope_completion_bind = '<C-]>'
   let g:pymode_rope_complete_on_dot=0
   let g:pymode_rope_goto_definition_bind = '<C-]>'
-  let g:pymode_rope_autoimport = 1
-  let g:pymode_rope_autoimport_import_after_complete = 1
+  let g:pymode_rope_autoimport = 0
+  let g:pymode_rope_autoimport_import_after_complete = 0
+  let g:pymode_rope_regenerate_on_write = 0
   autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
   set fileignorecase
+  unmap n
+  unmap N
+  nmap <silent> <leader>/ :noh<CR>
+  nnoremap <silent> <leader>w :w<CR>
+  nnoremap <silent> <leader>wq :wq<CR>
+  "nmap <leader>p :MarkdownPreview<CR>
+  call InitializeDirectories()
 
   " Use gui colors in terminal if available
   if has('termguicolors')
@@ -63,3 +112,13 @@ function! UserConfig()
   endif
 
 endfunction
+"""tips:
+"""====>
+"if g:mkdp_command_for_global
+"    au BufEnter * command! -buffer MarkdownPreview call s:serverStart()
+"else
+"    au BufEnter *.{md,mkd,markdown,mdown,mkdn,mdwn} command! -buffer MarkdownPreview call s:serverStart()
+"endif
+"""<====
+"command! -buffer MarkdownPreview call s:serverStart()
+"change the upper command to the below something wrong in the script
