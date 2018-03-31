@@ -11,9 +11,10 @@
 set -eo pipefail
 
 app_name="space-vim"
-repo_uri="https://github.com/liuchengxu/space-vim.git"
+conf_path="$HOME/.nvim"
+repo_uri="https://github.com/fatbean1212/space-vim.git"
 repo_name="space-vim"
-repo_path="$HOME/.space-vim"
+repo_path="$conf_path/space-vim"
 repo_branch="master"
 
 ###############################
@@ -39,6 +40,7 @@ exists() {
 }
 
 sync_repo() {
+    mkdir -p "$conf_path"
     if [ ! -e "$repo_path" ]; then
         msg "\033[1;34m==>\033[0m Trying to clone $repo_name"
         mkdir -p "$repo_path"
@@ -63,7 +65,7 @@ install_plugins() {
 
 generate_dot_spacevim() {
     if [ ! -f "$HOME/.spacevim" ]; then
-        ln -sf "$HOME/.space-vim/init.spacevim" "$HOME/.spacevim"
+        ln -sf "$repo_path/init.spacevim" "$HOME/.spacevim"
 
         ret="$?"
         success "Successfully generated .spacevim in your home directory"
@@ -82,6 +84,17 @@ backup() {
     fi
 }
 
+check_conf_dir() {
+  if [ -d "$1" ]; then
+    echo
+    msg "You get the wright conf dir"
+  else
+    mkdir $conf_dir
+    ret="$?"
+    success "make the wright conf dir"
+  fi
+}
+
 install_for_vim() {
     backup "$HOME/.vimrc"
     msg "\033[1;34m==>\033[0m Trying to download vim-plug"
@@ -90,7 +103,7 @@ install_for_vim() {
     ret="$?"
     success "Successfully downloaded vim-plug"
 
-    ln -sf "$HOME/.space-vim/init.vim" "$HOME/.vimrc"
+    ln -sf "$repo_path/init.vim" "$HOME/.vimrc"
     generate_dot_spacevim
 
     #install_plugins "vim"
@@ -105,10 +118,10 @@ install_for_neovim() {
     success "Successfully downloaded vim-plug"
 
     mkdir -p "$HOME/.config/nvim"
-    ln -sf "$HOME/.space-vim/init.vim" "$HOME/.config/nvim/init.vim"
+    ln -sf "$repo_path/init.vim" "$HOME/.config/nvim/init.vim"
     generate_dot_spacevim
 
-    install_plugins "nvim"
+    #install_plugins "nvim"
 }
 
 check_git() {
