@@ -1,7 +1,6 @@
 " Let Vim and NeoVim shares the same plugin directory.
 " Comment it out if you don't like
-"let g:spacevim_plug_home = '~/.nvim'
-let g:spacevim_plug_home = '~/.nvim2'
+let g:spacevim_plug_home = '~/.nvim/plugged'
 
 " The default leader key is space key.
 " Uncomment the line below and modify "<\Space>" if you prefer another
@@ -14,20 +13,16 @@ let g:vim_better_default_backup_on = 1
 let g:vim_better_default_persistent_undo = 1
 
 " Enable the existing layers in space-vim
-let g:spacevim_layers = [
-      "\ 'python', 'deoplete'
+let g:spacevim_layers = ['python', 'markdown', 'file-manager'
+      \ ,'auto-completion'
       \]
-      "\ 'fzf', 'unite', 'better-defaults',
-      "\  'python',
+      "\  'unite',
       "\ 'java', 'c-c++', 'file-manager'
       "\ ]
 
 "Layer 'better-defaults'
 "function! Layers()
-  "Layer 'better-defaults', {'exclude' : ['haya14busa/is.vim']}
-  "Layer 'markdown'
-  "Layer 'deoplete'
-  "Layer 'deoplete', { 'exclude' : ['eagletmt/neco-ghc', 'sebastianmarkow/deoplete-rust', 'zchee/deoplete-go']}
+"  Layer 'better-defaults', {'exclude' : ['haya14busa/is.vim']}
 "endfunction
 
 " If you want to have more control over the layer, try using Layer command.
@@ -36,17 +31,17 @@ let g:spacevim_layers = [
 " endif
 
 " Manage your own plugins, refer to vim-plug's instruction for more detials.
-"function! UserInit()
+function! UserInit()
 
   " Add plugin via Plug command.
-  "Plug 'junegunn/seoul256.vim'
-  "Plug 'zchee/deoplete-jedi'
+  Plug 'junegunn/seoul256.vim'
+  Plug 'altercation/vim-colors-solarized'
 
-"endfunction
+endfunction
 
 " Initialize directories {
 function! InitializeDirectories()
-    let parent = $HOME
+    let parent = $HOME."/.nvim"
     let prefix = 'nvim'
     let dir_list = {
                 \ 'backup': 'backupdir',
@@ -86,14 +81,17 @@ function! UserConfig()
   let g:pymode_rope_complete_on_dot=0
   let g:pymode_rope_goto_definition_bind = '<C-]>'
   let g:pymode_rope_regenerate_on_write = 0
+  let g:solarized_termcolors=256
+  let g:solarized_termtrans=1
   autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
   set fileignorecase
-  unmap n
-  unmap N
+  unmap <CR>
+  unmap <leader>sc
   nmap <silent> <leader>/ :noh<CR>
   nnoremap <silent> <leader>w :w<CR>
   nnoremap <silent> <leader>wq :wq<CR>
-  "nmap <leader>p :MarkdownPreview<CR>
+  nmap <leader>p :MarkdownPreview<CR>
+  nmap <leader>s :MarkdownPreviewStop<CR>
   call InitializeDirectories()
 
   " Use gui colors in terminal if available
