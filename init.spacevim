@@ -36,6 +36,12 @@ function! UserInit()
   " Add plugin via Plug command.
   Plug 'junegunn/seoul256.vim'
   Plug 'altercation/vim-colors-solarized'
+  Plug 'scrooloose/nerdcommenter'
+  Plug 'MarcWeber/vim-addon-mw-utils'
+  Plug 'tomtom/tlib_vim'
+  Plug 'garbas/vim-snipmate'
+  Plug 'honza/vim-snippets'
+  Plug 'mileszs/ack.vim'
 
 endfunction
 
@@ -75,24 +81,54 @@ endfunction
 function! UserConfig()
 
   " If you have installed the powerline fonts and want to enable airline layer
-  let g:airline_powerline_fonts=1
+  let g:airline_powerline_fonts = 1
+  let g:pymode_rope = 1
   let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe', 'pylint']
   let g:pymode_rope_completion_bind = '<C-]>'
-  let g:pymode_rope_complete_on_dot=0
+  let g:pymode_rope_complete_on_dot = 0
   let g:pymode_rope_goto_definition_bind = '<C-]>'
   let g:pymode_rope_regenerate_on_write = 0
-  let g:solarized_termcolors=256
-  let g:solarized_termtrans=1
+  let g:solarized_termcolors = 256
+  let g:solarized_termtrans = 1
   autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
   set fileignorecase
-  unmap <CR>
-  unmap <leader>sc
+  set mouse=a
+  set wrap
+  nn <CR> :
+  nun <CR>
+  "unmap <leader>sc
   nmap <silent> <leader>/ :noh<CR>
   nnoremap <silent> <leader>w :w<CR>
   nnoremap <silent> <leader>wq :wq<CR>
+  nnoremap <leader>+ :resize +8<CR>
+  nnoremap <leader>- :resize -8<CR>
+  nnoremap <leader>< :vertical resize +8<CR>
+  nnoremap <leader>> :vertical resize -8<CR>
+  cnoremap <M-b> <S-Left>
+  cnoremap <M-f> <S-Right>
   nmap <leader>p :MarkdownPreview<CR>
   nmap <leader>s :MarkdownPreviewStop<CR>
+  nnoremap <leader>t :sp term://zsh<CR>
+  nnoremap <leader>tv :vsp term://zsh<CR>
+  nnoremap <leader>sv :source /Users/heixian/.config/nvim/init.vim<CR>
+  nnoremap <leader>ev :vsp /Users/heixian/.spacevim<CR>
   call InitializeDirectories()
+  nnoremap <silent> <leader>d :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+  tnoremap <Esc> <C-\><C-n>
+  tnoremap <A-h> <C-\><C-N><C-w>h
+  tnoremap <A-j> <C-\><C-N><C-w>j
+  tnoremap <A-k> <C-\><C-N><C-w>k
+  tnoremap <A-l> <C-\><C-N><C-w>l
+  inoremap <A-h> <C-\><C-N><C-w>h
+  inoremap <A-j> <C-\><C-N><C-w>j
+  inoremap <A-k> <C-\><C-N><C-w>k
+  inoremap <A-l> <C-\><C-N><C-w>l
+  nnoremap <A-h> <C-w>h
+  nnoremap <A-j> <C-w>j
+  nnoremap <A-k> <C-w>k
+  nnoremap <A-l> <C-w>l
+  noremap <leader>k :bdelete<CR>
+  let g:mkdp_path_to_chrome = "open -a Google\\ Chrome"
 
   " Use gui colors in terminal if available
   if has('termguicolors')
