@@ -30,7 +30,7 @@ if g:WINDOWS
 endif
 " }
 
-let g:spacevim_dir = $HOME.'/.space-vim'
+let g:spacevim_dir = $HOME.'/.nvim/space-vim'
 let g:spacevim_core_dir = '/core'
 let g:spacevim_version = '0.7.0'
 

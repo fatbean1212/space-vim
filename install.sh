@@ -121,7 +121,7 @@ install_for_neovim() {
     ln -sf "$repo_path/init.vim" "$HOME/.config/nvim/init.vim"
     generate_dot_spacevim
 
-    #install_plugins "nvim"
+    install_plugins "nvim"
 }
 
 check_git() {
