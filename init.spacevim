@@ -128,6 +128,8 @@ function! UserConfig()
   nnoremap <A-k> <C-w>k
   nnoremap <A-l> <C-w>l
   noremap <leader>k :bdelete<CR>
+  nmap <silent> to :call append('.', '')<CR>j
+  nmap <silent> tO :call append(line('.')-1, '')<CR>k
   let g:mkdp_path_to_chrome = "open -a Google\\ Chrome"
 
   " Use gui colors in terminal if available
